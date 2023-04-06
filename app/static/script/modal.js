@@ -21,7 +21,9 @@ $(document).ready(function () {
         } else {
             modal.find('.form-control').val('');
         }
-    })
+              
+        
+    });
 
     $('#submit-task').click(function () {
         const tID = $('#task-form-display').attr('taskID');
@@ -52,20 +54,43 @@ $(document).ready(function () {
                         console.log(res.response)
                         location.reload();
                     },
-                    error: function () {
-                        console.log('Error');
+                    error: function (err) {
+                        console.log(err);
                     }
                 });
-
-            },error: function(){
-                console.log('Error');
+                        
+                
+                
+            },error: function(err){
+                console.log(err);
             }
         })
        
     });
     
 
-   
+    $('#edit-task-btn').click(function () {
+        const tID = $('#task-form-display').attr('taskID');
+        console.log($('#edit-task-modal').find('.form-control').val())
+        $.ajax({
+            type: 'PUT',
+            url: '/edit-task/'+tID,
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({
+                'desp': $('#edit-task-modal').find('.form-control').val(),
+                'id': tID
+            }),
+            success: function (res) {
+                console.log(res.response)
+                location.reload();
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+        
+       
+    });
     
     
     $('.remove').click(function () {
@@ -91,6 +116,8 @@ $(document).ready(function () {
 
         if (state.text() === "Todo") {
             new_state = "In Progress"
+        } if (state.text() === "In Progress") {
+            new_state = "Completed"
         }
        
         console.log(new_state)
@@ -111,6 +138,12 @@ $(document).ready(function () {
                 console.log('Error');
             }
         });
+
+        
     });
     
 });
+
+
+
+

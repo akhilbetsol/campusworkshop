@@ -35,8 +35,20 @@ def update_status(task_id):
 
 
 
+@app.route("/edit-task/<int:task_id>", methods=['PUT'])
+def update_task(task_id):
+    data = request.get_json()
 
+    try:
+        if "desp" in data:
+            db_helper.update_task_entry(task_id, data["desp"])
+            result = {'success': True, 'response': 'Task Updated'}
+        else:
+            result = {'success': True, 'response': 'Nothing Updated'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong'}
 
+    return jsonify(result)
 
 @app.route("/create", methods=['POST'])
 def create():
